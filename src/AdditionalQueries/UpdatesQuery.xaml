@@ -1,0 +1,25 @@
+﻿<Window x:Class="Win_Info.AdditionalQueries.UpdatesQuery"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Win_Info.AdditionalQueries"
+        mc:Ignorable="d"
+        Title="Update Query" Height="500" Width="450">
+    <Grid>
+        <GroupBox x:Name="groupBox_Update" Header="Updates" Margin="10,10,10,5">
+            <Grid>
+                <ListView x:Name="listView_Update" Margin="10,10,12,29">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Update ID" Width="150" DisplayMemberBinding="{Binding HotfixID}" />
+                            <GridViewColumn Header="Install Date" Width="100" DisplayMemberBinding="{Binding InstalledOn}" />
+                            <GridViewColumn Header="Description" Width="100" DisplayMemberBinding="{Binding Description}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Button x:Name="Update_Refresh" Content="Refresh" Margin="0,0,12,4" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom"/>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

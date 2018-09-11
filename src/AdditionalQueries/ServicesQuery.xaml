@@ -1,0 +1,26 @@
+﻿<Window x:Class="Win_Info.AdditionalQueries.ServicesQuery"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Win_Info.AdditionalQueries"
+        mc:Ignorable="d"
+        Title="Services Query" Height="650" Width="525">
+    <Grid>
+        <GroupBox x:Name="groupBox_Services" Header="Services" Margin="10">
+            <Grid>
+                <ListView x:Name="listView_service" Margin="10,10,12,29">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Name" Width="135" DisplayMemberBinding="{Binding Name}" />
+                            <GridViewColumn Header="Display Name" Width="135" DisplayMemberBinding="{Binding DisplayName}" />
+                            <GridViewColumn Header="State" Width="90" DisplayMemberBinding="{Binding State}" />
+                            <GridViewColumn Header="StartMode" Width="90" DisplayMemberBinding="{Binding StartMode}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Button x:Name="Service_Refresh" Content="Refresh" Margin="0,0,12,4" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom"/>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>
