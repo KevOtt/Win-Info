@@ -37,8 +37,6 @@ namespace Win_Info
             ManagementScope scope = new ManagementScope(connectionPath, connectionOptions);
 
             // Try to connect scope
-
-            // Should really catch and rethrow, need cleaner way of getting the status
             try
             {
                 scope.Connect();
@@ -53,23 +51,21 @@ namespace Win_Info
                 validConnection = false;
                 ConnectionError = ("Unable to Connect: " + e.Message);
             }
+            catch (ManagementException e)
+            {
+                validConnection = false;
+                ConnectionError = ("Connection parameter issue: " + e.Message);
+            }
             catch (Exception e)
             {
                 validConnection = false;
-                ConnectionError = ("Unknown Error: " + e);
+                ConnectionError = ("Unknown Error: " + e.Message);
             }
-            
             
             // If we didn't get any failures, set valid status and return the scope
             if(validConnection != false && scope.IsConnected == true)
             {
-                ConnectionError = null;
                 managementScope = scope;
-            }
-            else
-            {
-                ConnectionError = "Unknown Error";
-                validConnection = false;
             }
         }
 

@@ -38,15 +38,16 @@ namespace Win_Info
         public MainWindow()
         {
             InitializeComponent();
+            connectinfo.ConnectStatus = "Not Connected";
             groupbox_connectioninfo.DataContext = connectinfo;
         }
 
         private void Connect_Click(object sender, RoutedEventArgs e)
         {
-            // Check if server is blank
+            // Check if target server is blank
             if (TargetServer.Text == "")
             {
-                MessageBox.Show("No target server specified", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("No target system specified", "", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -68,23 +69,26 @@ namespace Win_Info
                     return;
                 }
             }
+
+            // Set connection status
             connectinfo.ConnectStatus = "Connecting...";
+            // Attempt to open WMI connection to server
+            Connect.IsEnabled = false;
+            connectionHandler.CreateConnection(TargetServer.Text, credential);
+            // Check we have a valid connection
+            if (connectionHandler.validConnection != true)
+            {
+                MessageBox.Show((connectionHandler.ConnectionError), "Connection Error", 
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            ConnectServer();
-
-            // Establish the connection and get data in a separate thread
+            // Get data in a separate thread
+            connectinfo.ConnectStatus = "Querying Data....";
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += worker_GetData;
             worker.RunWorkerCompleted += worker_RefreshData;
             worker.RunWorkerAsync();
-        }
-
-        // Things we want to do in the background
-        private void ConnectServer() { 
-            // Create Connection
-            groupbox_connectioninfo.DataContext = connectinfo;
-            Connect.IsEnabled = false;
-            connectionHandler.CreateConnection(TargetServer.Text, credential);
         }
 
         private void GetData()
@@ -133,6 +137,7 @@ namespace Win_Info
         {
             this.Dispatcher.Invoke(() =>
             {
+                connectinfo.ConnectStatus = ("Connected to " + TargetServer.Text);
                 RefreshView();
             });
         }
@@ -165,10 +170,6 @@ namespace Win_Info
         }
 
 # region EventHandlers
-        protected virtual void OnDataReturned(EventArgs e)
-        {
-            RefreshView();
-        }
 
         private void TargetServer_TextChanged(object sender, TextChangedEventArgs e)
         {

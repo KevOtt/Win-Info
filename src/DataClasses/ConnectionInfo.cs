@@ -3,12 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Win_Info.DataClasses
 {
-    class ConnectionInfo
+    public class ConnectionInfo : INotifyPropertyChanged
     {
-        public string ConnectStatus { get; set; }
-        public string LastConnection { get; set; }
+        private string _connectStatus;
+        public string ConnectStatus
+        {
+            get
+            {
+                return this._connectStatus;
+            }
+            set
+            {
+                _connectStatus = value;
+                OnPropertyRaised("ConnectStatus");
+            }
+        }
+        private string _lastConnection;
+        public string LastConnection
+        {
+            get
+            {
+                return this._lastConnection;
+            }
+            set
+            {
+                _lastConnection = value;
+                OnPropertyRaised("LastConnection");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyRaised(string propertyname)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyname));
+            }
+        }
     }
 }

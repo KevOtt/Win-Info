@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Win_Info"
         mc:Ignorable="d"
-        Title="MainWindow" Height="790" Width="1400">
+        Title="Win Info" Height="790" Width="1400">
     <Grid Height="759" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="343*"/>
@@ -14,10 +14,10 @@
         </Grid.ColumnDefinitions>
         <GroupBox x:Name="groupbox_TargetServer" Margin="10,25,10,0" Height="81" VerticalAlignment="Top">
             <GroupBox.Header>
-                <TextBlock FontWeight="Bold">Target Server</TextBlock>
+                <TextBlock FontWeight="Bold">Target System</TextBlock>
             </GroupBox.Header>
             <Grid>
-                <TextBlock x:Name="textblock_ConnectDesc" Margin="67,0,0,3" TextWrapping="Wrap" Text="Server Name" RenderTransformOrigin="0.384,0.439" HorizontalAlignment="Left" Width="76" Height="17" VerticalAlignment="Bottom">
+                <TextBlock x:Name="textblock_ConnectDesc" Margin="67,0,0,3" TextWrapping="Wrap" Text="System Name" RenderTransformOrigin="0.384,0.439" HorizontalAlignment="Left" Width="76" Height="17" VerticalAlignment="Bottom">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -49,7 +49,7 @@
                 <TextBlock x:Name="textblock_connectStatusDesc" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Status:" VerticalAlignment="Top"/>
                 <TextBlock x:Name="textBlock_ConnectStatusData"  Margin="50,10,358,33" Foreground="Blue" Text="{Binding ConnectStatus}"/>
                 <TextBlock x:Name="textblock_TargetIPDesc" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" Text="Target IP:" VerticalAlignment="Top"/>
-                <TextBlock x:Name="textBlock_TargetIPData"  Margin="63,31,358,12" Foreground="Blue" Text="{Binding TargetIP}"/>
+                <TextBlock x:Name="textBlock_TargetIPData"  Margin="63,31,358,12" Foreground="Blue" Text="{Binding ConnectStatus}"/>
                 <Button x:Name="botton_ConnectionRefresh" Content="Refresh" Margin="197,32,0,7" HorizontalAlignment="Left" Width="74"/>
                 <TextBlock x:Name="textblock_LastConnectionDesc" HorizontalAlignment="Left" Margin="197,10,0,0" TextWrapping="Wrap" Text="LastConnection:" VerticalAlignment="Top"/>
                 <TextBlock x:Name="textBlock_LastConnectionData"  Margin="286,10,10,33" Foreground="Blue" Text="{Binding LastConnection}"/>
@@ -192,7 +192,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
-                                            <Image Source="{Binding Image}" />
+                                            <Image Source="pack://application:,,,/Images/Test.png"/>
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
