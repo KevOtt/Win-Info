@@ -41,16 +41,13 @@
                 <Button x:Name="Credential_Prompt" Content="Prompt" Margin="0,15,10,0" HorizontalAlignment="Right" Width="76" Height="20" VerticalAlignment="Top"/>
             </Grid>
         </GroupBox>
-        <GroupBox x:Name="groupbox_connectioninfo" Height="81" Margin="10,25,170,0" VerticalAlignment="Top" Grid.Column="2">
+        <GroupBox x:Name="groupbox_connectioninfo" Height="81" Margin="10,25,322,0" VerticalAlignment="Top" Grid.Column="2">
             <GroupBox.Header>
                 <TextBlock FontWeight="Bold">Connection Info</TextBlock>
             </GroupBox.Header>
             <Grid>
                 <TextBlock x:Name="textblock_connectStatusDesc" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Status:" VerticalAlignment="Top"/>
                 <TextBlock x:Name="textBlock_ConnectStatusData"  Margin="50,10,358,33" Foreground="Blue" Text="{Binding ConnectStatus}"/>
-                <TextBlock x:Name="textblock_TargetIPDesc" HorizontalAlignment="Left" Margin="10,31,0,0" TextWrapping="Wrap" Text="Target IP:" VerticalAlignment="Top"/>
-                <TextBlock x:Name="textBlock_TargetIPData"  Margin="63,31,358,12" Foreground="Blue" Text="{Binding ConnectStatus}"/>
-                <Button x:Name="botton_ConnectionRefresh" Content="Refresh" Margin="197,32,0,7" HorizontalAlignment="Left" Width="74"/>
                 <TextBlock x:Name="textblock_LastConnectionDesc" HorizontalAlignment="Left" Margin="197,10,0,0" TextWrapping="Wrap" Text="LastConnection:" VerticalAlignment="Top"/>
                 <TextBlock x:Name="textBlock_LastConnectionData"  Margin="286,10,10,33" Foreground="Blue" Text="{Binding LastConnection}"/>
             </Grid>
@@ -78,13 +75,13 @@
                 <StackPanel x:Name="StackPanel_BasicInfo">
                     <TextBlock Text="" FontSize="6"/>
                     <TextBlock x:Name="textblock_SysNameDesc" Text="System Name:" Padding="1"/>
-                    <TextBlock x:Name="textBlock_SysNameData" Text="{Binding SysName}" Foreground="ForestGreen" FontWeight="Bold" Padding="1"/>
+                    <TextBlock x:Name="textBlock_SysNameData" Text="{Binding SysName}" Foreground="#FF0835AC" Padding="1"/>
                     <TextBlock x:Name="textBlock_OSDesc" Text="OS:" Padding="1"/>
-                    <TextBlock x:Name="textBlock_OSData" Text="{Binding OS}" Foreground="ForestGreen"  FontWeight="Bold" Padding="1"/>
+                    <TextBlock x:Name="textBlock_OSData" Text="{Binding OS}" Foreground="#FF0835AC" Padding="1"/>
                     <TextBlock x:Name="textblock_SystemTypeDesc" Text="System Type:" Padding="1"/>
-                    <TextBlock x:Name="textBlock_SystemTypeData" Text="{Binding SystemType}" Foreground="ForestGreen"  FontWeight="Bold" Padding="1"/>
+                    <TextBlock x:Name="textBlock_SystemTypeData" Text="{Binding SystemType}" Foreground="#FF0835AC" Padding="1"/>
                     <TextBlock x:Name="textblock_BootTimeDesc" Text="Last System Boot Time:" Padding="1"/>
-                    <TextBlock x:Name="textBlock_BootTimeData"  Text="{Binding BootTime}" Foreground="ForestGreen"  FontWeight="Bold" Padding="1"/>
+                    <TextBlock x:Name="textBlock_BootTimeData"  Text="{Binding BootTime}" Foreground="#FF0835AC" Padding="1"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox x:Name="groupbox_Queries" Grid.Column="1" Margin="5" Grid.Row="1">
@@ -117,29 +114,29 @@
                     <StackPanel Margin="0,3,0,3">
                         <TextBlock x:Name="textBlock_Manufacturer" Padding="2">
                             <Run Text="Manufacturer: " />
-                            <Run Text="{Binding Manufacturer}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding Manufacturer}" Foreground="#FF0835AC"/>
                         </TextBlock>
                         <TextBlock x:Name="textBlock_Model" Padding="2">
                             <Run Text="Model: " />
-                            <Run Text="{Binding Model}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding Model}" Foreground="#FF0835AC"/>
                         </TextBlock>
                         <TextBlock x:Name="textBlock_InstallDate" Padding="2">
                             <Run Text="System Install Date: " />
-                            <Run Text="{Binding InstallDate}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding InstallDate}" Foreground="#FF0835AC"/>
                         </TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="0,3,0,3">
                         <TextBlock x:Name="textBlock_OSBuild" Padding="2">
                             <Run Text="OS Build: " />
-                            <Run Text="{Binding OSBuild}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding OSBuild}" Foreground="#FF0835AC"/>
                         </TextBlock>
                         <TextBlock x:Name="textBlock_OSVersion" Padding="2">
                             <Run Text="OS Version: " />
-                            <Run Text="{Binding OSVersion}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding OSVersion}" Foreground="#FF0835AC"/>
                         </TextBlock>
                         <TextBlock x:Name="textBlock_BiosVersion" Padding="2">
                             <Run Text="Bios Version: " />
-                            <Run Text="{Binding BiosVersion}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding BiosVersion}" Foreground="#FF0835AC"/>
                         </TextBlock>
                     </StackPanel>
                 </Grid>
@@ -157,26 +154,26 @@
                     <StackPanel Margin="0,3,0,3">
                         <TextBlock x:Name="textBlock_Domain" Padding="2">
                             <Run Text="Domain: " />
-                            <Run Text="{Binding Domain}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding Domain}" Foreground="#FF0835AC"/>
                         </TextBlock>
                         <TextBlock x:Name="textBlock_TimeZone" Padding="2">
                             <Run Text="Time Zone: " />
-                            <Run Text="{Binding TimeZone}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding TimeZone}" Foreground="#FF0835AC"/>
                         </TextBlock>
                         <TextBlock x:Name="textBlock_Language" Padding="2">
                             <Run Text="OS Language: " />
-                            <Run Text="{Binding Language}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding Language}" Foreground="#FF0835AC"/>
                         </TextBlock>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="0,3,0,3">
                         <TextBlock x:Name="textBlock_BootDevice" Padding="2">
                             <Run Text="Boot Device: " />
-                            <Run Text="{Binding BootDevice}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding BootDevice}" Foreground="#FF0835AC"/>
                         </TextBlock>
 
                         <TextBlock x:Name="textBlock_SystemDir" Padding="2">
                             <Run Text="System Dir: " />
-                            <Run Text="{Binding SystemDir}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding SystemDir}" Foreground="#FF0835AC"/>
                         </TextBlock>
                     </StackPanel>
                 </Grid>
@@ -185,14 +182,14 @@
                 <GroupBox.Header>
                     <TextBlock FontWeight="Bold">Logical Disks</TextBlock>
                 </GroupBox.Header>
-                <ListView x:Name="listView_disk" Margin="10,10,10,10">
+                <ListView x:Name="listView_disk" Margin="10,10,10,10"  Foreground="#FF0835AC">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Test" Width="0">
+                            <GridViewColumn Header="" Width="25" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
-                                            <Image Source="pack://application:,,,/Images/Test.png"/>
+                                            <Image Source="/Resources/LogicalDisk.png"/>
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -215,42 +212,43 @@
                         <ColumnDefinition Width="247*"/>
                         <ColumnDefinition Width="248*"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Margin="0,5,0,0" Height="62" VerticalAlignment="Top">
+                    <StackPanel Margin="0,2,0,5" Height="62" VerticalAlignment="Top">
                         <TextBlock x:Name="textBlock_TotalPhysicalMemory" Padding="2">
                             <Run Text="Total Physical Memory: " />
-                            <Run Text="{Binding TotalPhysicalMemory}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding TotalPhysicalMemory}" Foreground="#FF0835AC"/>
                         </TextBlock>
                         <TextBlock x:Name="TotalVirtualMemory" Padding="2">
                             <Run Text="Total Virtual Memory: " />
-                            <Run Text="{Binding TotalVirtualMemory}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding TotalVirtualMemory}" Foreground="#FF0835AC"/>
                         </TextBlock>
                         <TextBlock x:Name="textBlock_CommitLimit" Padding="2">
                             <Run Text="Commit Limit: " />
-                            <Run Text="{Binding CommitLimit}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding CommitLimit}" Foreground="#FF0835AC"/>
                         </TextBlock>
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Margin="0,5,0,0" Height="62" VerticalAlignment="Top">
+                    <TextBlock Margin="10,73,0,80" FontWeight="Bold">Page Files</TextBlock>
+                    <StackPanel Grid.Column="1" Margin="0,2,0,5" Height="62" VerticalAlignment="Top">
                         <TextBlock x:Name="textBlock_Committed" Padding="2">
                             <Run Text="Committed: " />
-                            <Run Text="{Binding Committed}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding Committed}" Foreground="#FF0835AC"/>
                         </TextBlock>
                         <TextBlock x:Name="textBlock_AvailableMemory" Padding="2">
                             <Run Text="Available Memory: " />
-                            <Run Text="{Binding AvailableMemory}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding AvailableMemory}" Foreground="#FF0835AC"/>
                         </TextBlock>
                         <TextBlock x:Name="textBlock_InUseMemory" Padding="2">
                             <Run Text="In Use Memory: " />
-                            <Run Text="{Binding InUseMemory}" Foreground="ForestGreen" FontWeight="Bold"/>
+                            <Run Text="{Binding InUseMemory}" Foreground="#FF0835AC"/>
                         </TextBlock>
                     </StackPanel>
-                    <ListView x:Name="listView_PageFile" Margin="10,84,10,0" Height="73" VerticalAlignment="Top" Grid.ColumnSpan="2">
+                    <ListView x:Name="listView_PageFile" Margin="10,93,10,0" Height="64" VerticalAlignment="Top" Grid.ColumnSpan="2" Foreground="#FF0835AC">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Test" Width="0">
+                                <GridViewColumn Header="" Width="25" >
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Grid>
-                                                <Image Source="{Binding Image}" />
+                                                <Image Source="/Resources/PageFile.png"/>
                                             </Grid>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
@@ -267,9 +265,18 @@
                 <GroupBox.Header>
                     <TextBlock FontWeight="Bold">CPUs</TextBlock>
                 </GroupBox.Header>
-                <ListView x:Name="listView_CPU" Margin="10,5">
+                <ListView x:Name="listView_CPU" Margin="10,5"  Foreground="#FF0835AC">
                     <ListView.View>
                         <GridView>
+                            <GridViewColumn Header="" Width="25" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Image Source="/Resources/CPU.png"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                             <GridViewColumn Header="Name" Width="260" DisplayMemberBinding="{Binding Name}" />
                             <GridViewColumn Header="DeviceID" Width="70" DisplayMemberBinding="{Binding DeviceID}" />
                             <GridViewColumn Header="Cores" Width="70" DisplayMemberBinding="{Binding Cores}" />
@@ -283,9 +290,18 @@
                 <GroupBox.Header>
                     <TextBlock FontWeight="Bold">Physical Disks</TextBlock>
                 </GroupBox.Header>
-                <ListView x:Name="listView_PDisk" Margin="10,5,10,0">
+                <ListView x:Name="listView_PDisk" Margin="10,5,10,0"  Foreground="#FF0835AC">
                     <ListView.View>
                         <GridView>
+                            <GridViewColumn Header="" Width="25" >
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Image Source="/Resources/PhysicalDisk.png"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                             <GridViewColumn Header="Name" Width="260" DisplayMemberBinding="{Binding Name}" />
                             <GridViewColumn Header="Size" Width="80" DisplayMemberBinding="{Binding Size}" />
                             <GridViewColumn Header="Media Type" Width="160" DisplayMemberBinding="{Binding MediaType}" />
@@ -298,9 +314,18 @@
                     <TextBlock FontWeight="Bold">Network Adapters</TextBlock>
                 </GroupBox.Header>
                 <Grid>
-                    <ListView x:Name="listView_NIC" Margin="10,10,11,40">
+                    <ListView x:Name="listView_NIC" Margin="10,10,11,40" Foreground="#FF0835AC">
                         <ListView.View>
                             <GridView>
+                                <GridViewColumn Header="" Width="25" >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Image Source="/Resources/NIC.png"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                                 <GridViewColumn Header="Name" Width="250" DisplayMemberBinding="{Binding Name}" />
                                 <GridViewColumn Header="MAC Address" Width="110" DisplayMemberBinding="{Binding MACAddress}" />
                                 <GridViewColumn Header="Enabled" Width="60" DisplayMemberBinding="{Binding Enabled}" />
@@ -312,12 +337,12 @@
                     <CheckBox x:Name="showPhysicalNIC" Content="Show Only Physical Adapters" IsChecked="True" HorizontalAlignment="Left" Margin="10,0,0,10" Width="175" Height="17" VerticalAlignment="Bottom" Checked="showPhysicalNIC_Changed" Unchecked="showPhysicalNIC_Changed"/>
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="groupBox_InstalledRoles" Margin="5" Grid.Column="2" Grid.RowSpan="2" Grid.Row="2">
+            <GroupBox x:Name="groupBox_InstalledRoles" Margin="5" Grid.Column="2" Grid.RowSpan="2" Grid.Row="2"  Foreground="#FF0835AC">
                 <GroupBox.Header>
-                    <TextBlock FontWeight="Bold">Installed Server Roles</TextBlock>
+                    <TextBlock FontWeight="Bold" Foreground="Black">Installed Server Roles</TextBlock>
                 </GroupBox.Header>
                 <Grid>
-                    <ListView x:Name="listView_Roles" Margin="10,10,11,10">
+                    <ListView x:Name="listView_Roles" Margin="10,10,11,10" Foreground="#FF0835AC">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Feature Name" Width="300" DisplayMemberBinding="{Binding Name}" />
@@ -334,5 +359,17 @@
             <MenuItem Header="_Options" />
             <MenuItem Header="_Help" />
         </Menu>
+        <GroupBox x:Name="groupbox_connectionActions" Height="81" Margin="389,27,10,0" VerticalAlignment="Top" Grid.Column="2">
+            <GroupBox.Header>
+                <TextBlock FontWeight="Bold"><Run Text="Connection Actions"/></TextBlock>
+            </GroupBox.Header>
+            <Grid>
+                <TextBlock x:Name="textBlock_ConnectStatusData1"  Margin="50,10,358,33" Foreground="Blue" Text="{Binding ConnectStatus}"/>
+                <TextBlock x:Name="textBlock_TargetIPData1"  Margin="63,31,358,12" Foreground="Blue" Text="{Binding ConnectStatus}"/>
+                <Button x:Name="botton_ConnectionRefresh1" Content="Refresh" Margin="50,16,0,23" HorizontalAlignment="Left" Width="74"/>
+                <TextBlock x:Name="textBlock_LastConnectionData1"  Margin="286,10,10,33" Foreground="Blue" Text="{Binding LastConnection}"/>
+                <Button x:Name="botton_ConnectionAbort" Content="Stop" Margin="172,16,0,23" HorizontalAlignment="Left" Width="74"/>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>

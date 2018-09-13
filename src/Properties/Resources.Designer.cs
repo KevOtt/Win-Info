@@ -63,9 +63,49 @@ namespace Win_Info.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Test {
+        internal static System.Drawing.Bitmap CPU {
             get {
-                object obj = ResourceManager.GetObject("Test", resourceCulture);
+                object obj = ResourceManager.GetObject("CPU", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LogicalDisk {
+            get {
+                object obj = ResourceManager.GetObject("LogicalDisk", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NIC {
+            get {
+                object obj = ResourceManager.GetObject("NIC", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PageFile {
+            get {
+                object obj = ResourceManager.GetObject("PageFile", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PhysicalDisk {
+            get {
+                object obj = ResourceManager.GetObject("PhysicalDisk", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -139,7 +139,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Test.png" />
+    <Resource Include="Resources\PageFile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\PhysicalDisk.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\LogicalDisk.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CPU.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\NIC.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
