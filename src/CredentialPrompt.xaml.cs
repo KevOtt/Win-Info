@@ -145,5 +145,13 @@ namespace Win_Info
                 this.DialogResult = true;
             }
         }
+
+        private void PasswordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                OK_Click(this, new RoutedEventArgs());
+            }
+        }
     }
 }

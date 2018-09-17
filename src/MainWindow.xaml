@@ -5,19 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Win_Info"
         mc:Ignorable="d"
-        Title="Win Info" Height="790" Width="1400">
+        Title="Win Info" Height="790" Width="1450">
     <Grid Height="759" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="343*"/>
-            <ColumnDefinition Width="235*"/>
-            <ColumnDefinition Width="594*"/>
+            <ColumnDefinition Width="458*"/>
+            <ColumnDefinition Width="311*"/>
+            <ColumnDefinition Width="337*"/>
+            <ColumnDefinition Width="336*"/>
         </Grid.ColumnDefinitions>
+
         <GroupBox x:Name="groupbox_TargetServer" Margin="10,25,10,0" Height="81" VerticalAlignment="Top">
             <GroupBox.Header>
                 <TextBlock FontWeight="Bold">Target System</TextBlock>
             </GroupBox.Header>
             <Grid>
-                <TextBlock x:Name="textblock_ConnectDesc" Margin="67,0,0,3" TextWrapping="Wrap" Text="System Name" RenderTransformOrigin="0.384,0.439" HorizontalAlignment="Left" Width="76" Height="17" VerticalAlignment="Bottom">
+                <Grid.ColumnDefinitions>
+
+                    <ColumnDefinition Width="21*"/>
+                    <ColumnDefinition Width="20*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="textblock_ConnectDesc" Margin="67,0,0,1" TextWrapping="Wrap" Text="System Name" RenderTransformOrigin="0.384,0.439" Height="18" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="76">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -27,8 +34,10 @@
                         </TransformGroup>
                     </TextBlock.RenderTransform>
                 </TextBlock>
-                <TextBox x:Name="TargetServer" Height="22" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Width="190" Margin="10,14,0,0" TextChanged="TargetServer_TextChanged" KeyDown="TargetServer_KeyDown"/>
-                <Button x:Name="Connect" Content="Connect" Margin="0,15,10,0" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Width="74" Click="Connect_Click"/>
+                <TextBox x:Name="TargetServer" Height="22" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Margin="10,18,0,0" TextChanged="TargetServer_TextChanged" KeyDown="TargetServer_KeyDown" HorizontalAlignment="Left" Width="190"/>
+                <Button x:Name="button_Connect" Content="Connect" Margin="9,19,0,0" Height="20" VerticalAlignment="Top" Click="Connect_Click" RenderTransformOrigin="0.014,0.55" Grid.Column="1" HorizontalAlignment="Left" Width="74"/>
+                <Button x:Name="button_ConnectionRefresh" Content="Refresh" Margin="0,19,21,0" Height="20" VerticalAlignment="Top" Click="button_ConnectionRefresh_Click" IsEnabled="False" Grid.Column="1" HorizontalAlignment="Right" Width="74"/>
+
             </Grid>
         </GroupBox>
         <GroupBox x:Name="groupBox_Credentials" Height="81" VerticalAlignment="Top" Margin="10,25,10,0" Grid.Column="1">
@@ -36,23 +45,40 @@
                 <TextBlock FontWeight="Bold">Credentials</TextBlock>
             </GroupBox.Header>
             <Grid>
-                <RadioButton x:Name="radioButton_DefaultCred" Content="Use Current" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" IsChecked="True"/>
-                <RadioButton x:Name="radioButton_SavedCred" Content="Use Saved" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top"/>
-                <Button x:Name="Credential_Prompt" Content="Prompt" Margin="0,15,10,0" HorizontalAlignment="Right" Width="76" Height="20" VerticalAlignment="Top"/>
+                <RadioButton x:Name="radioButton_DefaultCred" Content="Use Current" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" IsChecked="True" Checked="radioButtonCred_Changed"/>
+                <RadioButton x:Name="radioButton_SavedCred" Content="Use Saved" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Checked="radioButtonCred_Changed"/>
+                <Button x:Name="Credential_Prompt" Content="Prompt" Margin="0,19,10,0" HorizontalAlignment="Right" Width="76" Height="20" VerticalAlignment="Top" Click="Credential_Prompt_Click"/>
             </Grid>
         </GroupBox>
-        <GroupBox x:Name="groupbox_connectioninfo" Height="81" Margin="10,25,322,0" VerticalAlignment="Top" Grid.Column="2">
+        <GroupBox x:Name="groupbox_Queries" Grid.Column="3" Margin="5,0,5,653" Height="81" VerticalAlignment="Bottom" IsEnabled="False">
             <GroupBox.Header>
-                <TextBlock FontWeight="Bold">Connection Info</TextBlock>
+                <TextBlock FontWeight="Bold">Additional Queries</TextBlock>
             </GroupBox.Header>
             <Grid>
-                <TextBlock x:Name="textblock_connectStatusDesc" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Status:" VerticalAlignment="Top"/>
-                <TextBlock x:Name="textBlock_ConnectStatusData"  Margin="50,10,358,33" Foreground="Blue" Text="{Binding ConnectStatus}"/>
-                <TextBlock x:Name="textblock_LastConnectionDesc" HorizontalAlignment="Left" Margin="197,10,0,0" TextWrapping="Wrap" Text="LastConnection:" VerticalAlignment="Top"/>
-                <TextBlock x:Name="textBlock_LastConnectionData"  Margin="286,10,10,33" Foreground="Blue" Text="{Binding LastConnection}"/>
+
+
+                <Button x:Name="button_queryProcesses" Content="Processes" Margin="20,19,218,0" Click="button_queryProcesses_Click" Height="20" VerticalAlignment="Top"/>
+                <Button x:Name="button_queryServices" Content="Services" Margin="0,19,20,0" Click="button_queryServices_Click" HorizontalAlignment="Right" Width="76" Height="20" VerticalAlignment="Top"/>
+                <Button x:Name="button_queryUpdates" Content="Updates" Margin="119,19,0,0" Height="20" VerticalAlignment="Top" Click="button_queryUpdates_Click" HorizontalAlignment="Left" Width="76"/>
+
             </Grid>
         </GroupBox>
-        <Grid x:Name="Grid_Info" Height="629" VerticalAlignment="Bottom" Grid.ColumnSpan="3" Opacity="0.5" IsEnabled="False">
+        <GroupBox x:Name="groupbox_connectioninfo" Height="81" Margin="9,25,10,0" VerticalAlignment="Top" IsEnabled="False" Grid.Column="2">
+            <GroupBox.Header>
+                <TextBlock FontWeight="Bold">Connection</TextBlock>
+            </GroupBox.Header>
+            <Grid>
+                <TextBlock x:Name="textBlock_Status" Height="26" VerticalAlignment="Center" Margin="0,5,14,28" FontSize="14">
+                            <Run Text="Status: "/>
+                            <Run Text="{Binding ConnectStatus}" Foreground="#FF0835AC"/>
+                </TextBlock>
+                <TextBlock x:Name="textblock_LastConnection" Margin="0,31,14,0" TextWrapping="Wrap" VerticalAlignment="Center" Height="28" FontSize="14">
+                        <Run Text="Last Connection: " />
+                        <Run Text="{Binding LastConnection}" Foreground="#FF0835AC"/>
+                </TextBlock>
+            </Grid>
+        </GroupBox>
+        <Grid x:Name="Grid_Info" Height="629" VerticalAlignment="Bottom" Grid.ColumnSpan="4" Opacity="0.5" IsEnabled="False">
             <Grid.RowDefinitions>
                 <RowDefinition Height="196"/>
                 <RowDefinition Height="196*"/>
@@ -67,41 +93,28 @@
                 <ColumnDefinition Width="596*"/>
                 <ColumnDefinition Width="5*"/>
             </Grid.ColumnDefinitions>
-            <GroupBox x:Name="groupBox_BasicInfo" Margin="5,5,5,5" Grid.Column="1">
+            <GroupBox x:Name="groupBox_BasicInfo" Margin="5,5,5,10" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
                 <GroupBox.Header>
                     <TextBlock FontWeight="Bold">Basic Info</TextBlock>
                 </GroupBox.Header>
 
                 <StackPanel x:Name="StackPanel_BasicInfo">
-                    <TextBlock Text="" FontSize="6"/>
+                    <TextBlock Text="" Padding="1" Height="4"/>
                     <TextBlock x:Name="textblock_SysNameDesc" Text="System Name:" Padding="1"/>
-                    <TextBlock x:Name="textBlock_SysNameData" Text="{Binding SysName}" Foreground="#FF0835AC" Padding="1"/>
+                    <TextBlock x:Name="textBlock_SysNameData" Text="{Binding SysName}" Foreground="#FF0835AC" Padding="1" Height="36" TextWrapping="Wrap"/>
                     <TextBlock x:Name="textBlock_OSDesc" Text="OS:" Padding="1"/>
-                    <TextBlock x:Name="textBlock_OSData" Text="{Binding OS}" Foreground="#FF0835AC" Padding="1"/>
+                    <TextBlock x:Name="textBlock_OSData" Text="{Binding OS}" Foreground="#FF0835AC" Padding="1" Height="36" TextWrapping="Wrap"/>
                     <TextBlock x:Name="textblock_SystemTypeDesc" Text="System Type:" Padding="1"/>
-                    <TextBlock x:Name="textBlock_SystemTypeData" Text="{Binding SystemType}" Foreground="#FF0835AC" Padding="1"/>
+                    <TextBlock x:Name="textBlock_SystemTypeData" Text="{Binding SystemType}" Foreground="#FF0835AC" Padding="1" Height="36" TextWrapping="Wrap"/>
                     <TextBlock x:Name="textblock_BootTimeDesc" Text="Last System Boot Time:" Padding="1"/>
-                    <TextBlock x:Name="textBlock_BootTimeData"  Text="{Binding BootTime}" Foreground="#FF0835AC" Padding="1"/>
+                    <TextBlock x:Name="textBlock_BootTimeData"  Text="{Binding BootTime}" Foreground="#FF0835AC" Padding="1" Height="36" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="textblock_FormFactorDesc" Text="Form Factor:" Padding="1"/>
+                    <TextBlock x:Name="textBlock_FormFactorData"  Text="{Binding ChassisType}" Foreground="#FF0835AC" Padding="1" Height="36" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="textblock_SerialNoDesc" Text="Serial Number:" Padding="1"/>
+                    <TextBlock x:Name="textBlock_SerialNoData"  Text="{Binding SerialNumber}" Foreground="#FF0835AC" Padding="1" Height="36" TextWrapping="Wrap"/>
                 </StackPanel>
             </GroupBox>
-            <GroupBox x:Name="groupbox_Queries" Grid.Column="1" Margin="5" Grid.Row="1">
-                <GroupBox.Header>
-                    <TextBlock FontWeight="Bold">Additional Queries</TextBlock>
-                </GroupBox.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="31*"/>
-                        <RowDefinition Height="20*"/>
-                        <RowDefinition Height="31*"/>
-                    </Grid.RowDefinitions>
 
-
-                    <Button x:Name="button_queryProcesses" Content="Processes" Margin="42,31,0,10" Click="button_queryProcesses_Click" HorizontalAlignment="Left" Width="76"/>
-                    <Button x:Name="button_queryServices" Content="Services" Margin="42,10,0,10" Grid.Row="1" Click="button_queryServices_Click" RenderTransformOrigin="0.607,0.4" HorizontalAlignment="Left" Width="75"/>
-                    <Button x:Name="button_queryUpdates" Content="Updates" Margin="42,10,0,0" Height="20" VerticalAlignment="Top" Grid.Row="2" Click="button_queryUpdates_Click" RenderTransformOrigin="0.747,0.4" HorizontalAlignment="Left" Width="75"/>
-
-                </Grid>
-            </GroupBox>
             <GroupBox x:Name="groupbox_AdvInfo" Margin="5,5,5,101" Grid.Column="2">
                 <GroupBox.Header>
                     <TextBlock FontWeight="Bold">Advanced Info</TextBlock>
@@ -185,7 +198,7 @@
                 <ListView x:Name="listView_disk" Margin="10,10,10,10"  Foreground="#FF0835AC">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="" Width="25" >
+                            <GridViewColumn Header="" Width="30" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -244,7 +257,7 @@
                     <ListView x:Name="listView_PageFile" Margin="10,93,10,0" Height="64" VerticalAlignment="Top" Grid.ColumnSpan="2" Foreground="#FF0835AC">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="" Width="25" >
+                                <GridViewColumn Header="" Width="30" >
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Grid>
@@ -268,7 +281,7 @@
                 <ListView x:Name="listView_CPU" Margin="10,5"  Foreground="#FF0835AC">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="" Width="25" >
+                            <GridViewColumn Header="" Width="30" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -293,7 +306,7 @@
                 <ListView x:Name="listView_PDisk" Margin="10,5,10,0"  Foreground="#FF0835AC">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="" Width="25" >
+                            <GridViewColumn Header="" Width="30" >
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -309,7 +322,7 @@
                     </ListView.View>
                 </ListView>
             </GroupBox>
-            <GroupBox x:Name="groupBox_NIC" Margin="5" Grid.Column="3" Grid.Row="2" Grid.RowSpan="2">
+            <GroupBox x:Name="groupBox_NIC" Margin="5" Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="2">
                 <GroupBox.Header>
                     <TextBlock FontWeight="Bold">Network Adapters</TextBlock>
                 </GroupBox.Header>
@@ -317,7 +330,7 @@
                     <ListView x:Name="listView_NIC" Margin="10,10,11,40" Foreground="#FF0835AC">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="" Width="25" >
+                                <GridViewColumn Header="" Width="30" >
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Grid>
@@ -326,18 +339,18 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Name" Width="250" DisplayMemberBinding="{Binding Name}" />
+                                <GridViewColumn Header="Name" Width="225" DisplayMemberBinding="{Binding Name}" />
                                 <GridViewColumn Header="MAC Address" Width="110" DisplayMemberBinding="{Binding MACAddress}" />
                                 <GridViewColumn Header="Enabled" Width="60" DisplayMemberBinding="{Binding Enabled}" />
                                 <GridViewColumn Header="Status" Width="70" DisplayMemberBinding="{Binding Status}" />
-                                <GridViewColumn Header="IPv4 Addr" Width="100" DisplayMemberBinding="{Binding Status}" />
+                                <GridViewColumn Header="IP Addresses" Width="220" DisplayMemberBinding="{Binding IPAddrs}" />
                             </GridView>
                         </ListView.View>
                     </ListView>
                     <CheckBox x:Name="showPhysicalNIC" Content="Show Only Physical Adapters" IsChecked="True" HorizontalAlignment="Left" Margin="10,0,0,10" Width="175" Height="17" VerticalAlignment="Bottom" Checked="showPhysicalNIC_Changed" Unchecked="showPhysicalNIC_Changed"/>
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="groupBox_InstalledRoles" Margin="5" Grid.Column="2" Grid.RowSpan="2" Grid.Row="2"  Foreground="#FF0835AC">
+            <GroupBox x:Name="groupBox_InstalledRoles" Margin="5" Grid.Column="3" Grid.RowSpan="2" Grid.Row="2"  Foreground="#FF0835AC">
                 <GroupBox.Header>
                     <TextBlock FontWeight="Bold" Foreground="Black">Installed Server Roles</TextBlock>
                 </GroupBox.Header>
@@ -345,31 +358,28 @@
                     <ListView x:Name="listView_Roles" Margin="10,10,11,10" Foreground="#FF0835AC">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Feature Name" Width="300" DisplayMemberBinding="{Binding Name}" />
+                                <GridViewColumn Header="" Width="30" >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Image Source="/Resources/Feature.png"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Feature Name" Width="300" DisplayMemberBinding="{Binding}" />
                             </GridView>
                         </ListView.View>
                     </ListView>
                 </Grid>
             </GroupBox>
         </Grid>
-        <Button x:Name="Exit" Content="Exit" Margin="0,0,20,15" Grid.Column="2" HorizontalAlignment="Right" Width="76" Height="20" VerticalAlignment="Bottom" Click="Exit_Click"/>
-        <Separator Height="12" Margin="0,113,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
-        <Menu x:Name="MainMenu" Height="20" VerticalAlignment="Top" Grid.ColumnSpan="3">
+        <Button x:Name="Exit" Content="Exit" Margin="0,0,20,15" Grid.Column="3" HorizontalAlignment="Right" Width="76" Height="20" VerticalAlignment="Bottom" Click="Exit_Click"/>
+        <Separator Height="12" Margin="0,113,0,0" VerticalAlignment="Top" Grid.ColumnSpan="4"/>
+        <Menu x:Name="MainMenu" Height="20" VerticalAlignment="Top" Grid.ColumnSpan="4">
             <MenuItem Header="_File" />
             <MenuItem Header="_Options" />
             <MenuItem Header="_Help" />
         </Menu>
-        <GroupBox x:Name="groupbox_connectionActions" Height="81" Margin="389,27,10,0" VerticalAlignment="Top" Grid.Column="2">
-            <GroupBox.Header>
-                <TextBlock FontWeight="Bold"><Run Text="Connection Actions"/></TextBlock>
-            </GroupBox.Header>
-            <Grid>
-                <TextBlock x:Name="textBlock_ConnectStatusData1"  Margin="50,10,358,33" Foreground="Blue" Text="{Binding ConnectStatus}"/>
-                <TextBlock x:Name="textBlock_TargetIPData1"  Margin="63,31,358,12" Foreground="Blue" Text="{Binding ConnectStatus}"/>
-                <Button x:Name="botton_ConnectionRefresh1" Content="Refresh" Margin="50,16,0,23" HorizontalAlignment="Left" Width="74"/>
-                <TextBlock x:Name="textBlock_LastConnectionData1"  Margin="286,10,10,33" Foreground="Blue" Text="{Binding LastConnection}"/>
-                <Button x:Name="botton_ConnectionAbort" Content="Stop" Margin="172,16,0,23" HorizontalAlignment="Left" Width="74"/>
-            </Grid>
-        </GroupBox>
     </Grid>
 </Window>

@@ -88,11 +88,15 @@ namespace Win_Info
             }
 
             // Create a new array of management objects based on the number of items in the managementobject collection
+            
             ManagementObject[] managementObjectArray = new ManagementObject[(queryCollection.Count)];
 
             // Copy each management object from the collection to the array
-            queryCollection.CopyTo(managementObjectArray,0);
-
+            if (queryCollection.Count != 0)
+            {
+                queryCollection.CopyTo(managementObjectArray, 0);
+            }
+            
             // Return our array of management objects regardless of number of members and process on the calling side
             // This is how we're dealing queries that return static values vs numerous members like cim_logicaldisk
             return managementObjectArray;

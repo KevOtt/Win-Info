@@ -28,7 +28,7 @@ namespace Win_Info.DataClasses
         public string Language { get; set; }
         public string BootDevice { get; set; }
         public string SystemDir { get; set; }
-        //Memory
+        // Memory
         public string TotalPhysicalMemory { get; set;}
         public string TotalVirtualMemory { get; set; }
         public string CommitLimit { get; set; }

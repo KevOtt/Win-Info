@@ -29,6 +29,9 @@ namespace Win_Info
         public List<string> GetFeatureData()
         {
             ManagementObject[] managementObjectArray;
+            // Create return list
+            List<String> features = new List<string>();
+
             // Run query
             try
             {
@@ -36,16 +39,18 @@ namespace Win_Info
             }
             catch (System.Management.ManagementException e)
             {
-                // Add code here to ignore missing class
-                throw e;
+                // Catching invalid class exception for desktop OS's, returning empty list 
+                if (e.Message == "Invalid class ")
+                {
+                    return features;
+                }
+                else throw;
             }
             
-            // Create return list
-            List<String> features = new List<string>();
             // Return data from management object array
             foreach (ManagementObject m in managementObjectArray)
             {
-                features.Add((m.GetPropertyValue("Name")).ToString());
+                features.Add((m.GetPropertyValue("Name"))?.ToString() ?? "");
             }
             return features;
         }
@@ -61,12 +66,12 @@ namespace Win_Info
             {
                 cpus.Add(new DataClasses.CPU
                 {
-                    Name = (m.GetPropertyValue("Name")).ToString(),
-                    DeviceID = (m.GetPropertyValue("DeviceID")).ToString(),
-                    Cores = (m.GetPropertyValue("NumberOfCores").ToString()),
-                    LogicalProcessors = (m.GetPropertyValue("NumberOfLogicalProcessors").ToString()),
-                    AddressWidth = (m.GetPropertyValue("AddressWidth").ToString() + "bit"),
-                    MaxSpeed = (m.GetPropertyValue("MaxClockSpeed").ToString() + "MHz")
+                    Name = (m.GetPropertyValue("Name"))?.ToString() ?? "",
+                    DeviceID = (m.GetPropertyValue("DeviceID"))?.ToString() ?? "",
+                    Cores = (m.GetPropertyValue("NumberOfCores")?.ToString() ?? ""),
+                    LogicalProcessors = (m.GetPropertyValue("NumberOfLogicalProcessors")?.ToString() ?? ""),
+                    AddressWidth = (m.GetPropertyValue("AddressWidth")?.ToString() ?? "" + "bit"),
+                    MaxSpeed = (m.GetPropertyValue("MaxClockSpeed")?.ToString() ?? "" + "MHz")
                 });
             }
             return cpus;
@@ -83,11 +88,11 @@ namespace Win_Info
             {
                 disks.Add(new DataClasses.Disk
                 {
-                    Name = (m.GetPropertyValue("Name")).ToString(),
+                    Name = (m.GetPropertyValue("Name"))?.ToString() ?? "",
                     FreeSpace = (((UInt64)(m.GetPropertyValue("FreeSpace")) / 1074000000).ToString()) + " GB",
                     Size = (((UInt64)(m.GetPropertyValue("Size")) / 1074000000).ToString()) + " GB",
-                    FileSystem = (m.GetPropertyValue("FileSystem")).ToString(),
-                    VolumeName = (m.GetPropertyValue("VolumeName")).ToString()
+                    FileSystem = (m.GetPropertyValue("FileSystem"))?.ToString() ?? "",
+                    VolumeName = (m.GetPropertyValue("VolumeName"))?.ToString() ?? ""
                 });
             }
             return disks;
@@ -96,11 +101,13 @@ namespace Win_Info
         public List<DataClasses.NIC> GetNICData()
         {
             // Run query
-            ManagementObject[] managementObjectArray = connection.RunQuery("SELECT Name, Manufacturer, MACAddress, PhysicalAdapter, NetEnabled, NetConnectionStatus FROM Win32_NetworkAdapter");
+            ManagementObject[] netAdapter = connection.RunQuery("SELECT Name, Manufacturer, MACAddress, PhysicalAdapter, NetEnabled, NetConnectionStatus FROM Win32_NetworkAdapter");
+            ManagementObject[] netAdapterConfig = connection.RunQuery("SELECT MACAddress, IPAddress FROM Win32_NetworkAdapterConfiguration");
+            
             // Create return list
             List<DataClasses.NIC> NICs = new List<DataClasses.NIC>();
             // Return data from management object array
-            foreach (ManagementObject m in managementObjectArray)
+            foreach (ManagementObject m in netAdapter)
             {
                 string statusString = null;
                 switch ((m.GetPropertyValue("NetConnectionStatus") == null ? 0 : ((UInt16)(m.GetPropertyValue("NetConnectionStatus")))))
@@ -150,15 +157,30 @@ namespace Win_Info
                 }
                 NICs.Add(new DataClasses.NIC
                 {
-                    Name = (m.GetPropertyValue("Name") == null ? "" : (m.GetPropertyValue("Name")).ToString()),
-                    Manufacturer = (m.GetPropertyValue("Manufacturer") == null ? "" : (m.GetPropertyValue("Manufacturer")).ToString()),
-                    MACAddress = (m.GetPropertyValue("MACAddress") == null ? "" : (m.GetPropertyValue("MACAddress")).ToString()),
+                    Name = (m.GetPropertyValue("Name") == null ? "" : (m.GetPropertyValue("Name"))?.ToString() ?? ""),
+                    Manufacturer = (m.GetPropertyValue("Manufacturer") == null ? "" : (m.GetPropertyValue("Manufacturer"))?.ToString() ?? ""),
+                    MACAddress = (m.GetPropertyValue("MACAddress") == null ? "" : (m.GetPropertyValue("MACAddress"))?.ToString() ?? ""),
                     PhysicalAdapter = (m.GetPropertyValue("PhysicalAdapter") == null ? false : (bool)(m.GetPropertyValue("PhysicalAdapter"))),
                     Enabled = (m.GetPropertyValue("NetEnabled") == null ? false : (bool)(m.GetPropertyValue("NetEnabled"))),
-                    
                     Status = statusString
                 });
             };
+
+            // Get IP address if it exists
+            foreach(ManagementObject m in netAdapterConfig)
+            {
+
+                var mac = m.GetPropertyValue("MACAddress");
+                string[] i = (string[])m.GetPropertyValue("IPAddress");
+                
+                if(mac == null || i == null)
+                {
+                    continue;
+                }
+
+                (NICs.First(n => n.MACAddress == mac.ToString())).IPAddrs = string.Join(" ; ",i);
+            }
+
             return NICs;
         }
 
@@ -180,7 +202,7 @@ namespace Win_Info
 
                 pageFiles.Add(new DataClasses.PageFile
                 {
-                    Name = (m.GetPropertyValue("Name")).ToString(),
+                    Name = (m.GetPropertyValue("Name"))?.ToString() ?? "",
                     MaximumSize = (((UInt64)(m.GetPropertyValue("FileSize")) / 1074000000).ToString()) + " GB",
                     InitialSize = initialsize
                 });
@@ -199,9 +221,9 @@ namespace Win_Info
             {
                 pageFiles.Add(new DataClasses.PhysicalDisk
                 {
-                    Name = (m.GetPropertyValue("Name")).ToString(),
+                    Name = (m.GetPropertyValue("Name"))?.ToString() ?? "",
                     Size = (((UInt64)(m.GetPropertyValue("Size")) / 1074000000).ToString()) + " GB",
-                    MediaType = (m.GetPropertyValue("MediaType").ToString())
+                    MediaType = (m.GetPropertyValue("MediaType")?.ToString() ?? "")
                 });
             }
             return pageFiles;
@@ -219,10 +241,10 @@ namespace Win_Info
             {
                 processes.Add(new DataClasses.Process
                 {
-                    Name = (m.GetPropertyValue("Name")).ToString(),
-                    ProcessID = (m.GetPropertyValue("ProcessID")).ToString(),
-                    ThreadCount = (m.GetPropertyValue("ThreadCount")).ToString(),
-                    PageFileUsage = (m.GetPropertyValue("PageFileUsage")).ToString()
+                    Name = (m.GetPropertyValue("Name"))?.ToString() ?? "",
+                    ProcessID = (m.GetPropertyValue("ProcessID"))?.ToString() ?? "",
+                    ThreadCount = (m.GetPropertyValue("ThreadCount"))?.ToString() ?? "",
+                    PageFileUsage = (m.GetPropertyValue("PageFileUsage"))?.ToString() ?? ""
                 });
             }
             return processes;
@@ -239,10 +261,10 @@ namespace Win_Info
             {
                 services.Add(new DataClasses.Service
                 {
-                    Name = (m.GetPropertyValue("Name")).ToString(),
-                    DisplayName = (m.GetPropertyValue("DisplayName")).ToString(),
-                    State = (m.GetPropertyValue("State")).ToString(),
-                    StartMode = (m.GetPropertyValue("StartMode")).ToString()
+                    Name = (m.GetPropertyValue("Name"))?.ToString() ?? "",
+                    DisplayName = (m.GetPropertyValue("DisplayName"))?.ToString() ?? "",
+                    State = (m.GetPropertyValue("State"))?.ToString() ?? "",
+                    StartMode = (m.GetPropertyValue("StartMode"))?.ToString() ?? ""
                 });
             }
             return services;
@@ -261,35 +283,35 @@ namespace Win_Info
             ManagementObject timeZone = (connection.RunQuery("SELECT StandardName FROM win32_Timezone"))[0];
 
             // Format data and assign to return object
-            systeminfo.AvailableMemory = perfOSMem.GetPropertyValue("AvailableMBytes").ToString() + "MB";
-            systeminfo.BiosVersion = bios.GetPropertyValue("Version").ToString();
-            systeminfo.BootDevice = operatingSystem.GetPropertyValue("BootDevice").ToString();
-            string boot = operatingSystem.GetPropertyValue("LastBootUpTime").ToString();
+            systeminfo.AvailableMemory = perfOSMem.GetPropertyValue("AvailableMBytes")?.ToString() ?? "" + "MB";
+            systeminfo.BiosVersion = bios.GetPropertyValue("Version")?.ToString() ?? "";
+            systeminfo.BootDevice = operatingSystem.GetPropertyValue("BootDevice")?.ToString() ?? "";
+            string boot = operatingSystem.GetPropertyValue("LastBootUpTime")?.ToString() ?? "";
             if (boot != null)
             {
                 systeminfo.BootTime = ManagementDateTimeConverter.ToDateTime(boot).ToString("MM/dd/yyyy hh:mm:ss tt");
             }
-            systeminfo.ChassisType = computerSystem.GetPropertyValue("ChassisSKUNumber").ToString();
+            systeminfo.ChassisType = computerSystem.GetPropertyValue("ChassisSKUNumber")?.ToString() ?? "";
             systeminfo.CommitLimit = ((UInt64)(perfOSMem.GetPropertyValue("CommitLimit")) / 1048576).ToString() + "MB";
             systeminfo.Committed = ((UInt64)(perfOSMem.GetPropertyValue("CommittedBytes")) / 1048576).ToString() + "MB";
-            systeminfo.Domain = computerSystem.GetPropertyValue("Domain").ToString();
+            systeminfo.Domain = computerSystem.GetPropertyValue("Domain")?.ToString() ?? "";
             systeminfo.InUseMemory = (((UInt64)(computerSystem.GetPropertyValue("TotalPhysicalMemory")) - (UInt64)(perfOSMem.GetPropertyValue("AvailableMBytes"))) / 1048576).ToString() + "MB";
-            string install = operatingSystem.GetPropertyValue("InstallDate").ToString();
+            string install = operatingSystem.GetPropertyValue("InstallDate")?.ToString() ?? "";
             if(install != null)
             {
                 systeminfo.InstallDate = ManagementDateTimeConverter.ToDateTime(install).ToString("MM/dd/yyyy hh:mm:ss tt");
             }
-            systeminfo.Language = operatingSystem.GetPropertyValue("OSLanguage").ToString();
-            systeminfo.Manufacturer = computerSystem.GetPropertyValue("Manufacturer").ToString();
-            systeminfo.Model = computerSystem.GetPropertyValue("Model").ToString();
-            systeminfo.OS = operatingSystem.GetPropertyValue("Caption").ToString();
-            systeminfo.OSBuild = operatingSystem.GetPropertyValue("BuildNumber").ToString();
-            systeminfo.OSVersion = operatingSystem.GetPropertyValue("Version").ToString();
-            systeminfo.SerialNumber = bios.GetPropertyValue("SerialNumber").ToString();
-            systeminfo.SysName = operatingSystem.GetPropertyValue("CSName").ToString();
-            systeminfo.SystemDir = operatingSystem.GetPropertyValue("SystemDirectory").ToString();
-            systeminfo.SystemType = computerSystem.GetPropertyValue("SystemType").ToString();
-            systeminfo.TimeZone = timeZone.GetPropertyValue("StandardName").ToString();
+            systeminfo.Language = operatingSystem.GetPropertyValue("OSLanguage")?.ToString() ?? "";
+            systeminfo.Manufacturer = computerSystem.GetPropertyValue("Manufacturer")?.ToString() ?? "";
+            systeminfo.Model = computerSystem.GetPropertyValue("Model")?.ToString() ?? "";
+            systeminfo.OS = operatingSystem.GetPropertyValue("Caption")?.ToString() ?? "";
+            systeminfo.OSBuild = operatingSystem.GetPropertyValue("BuildNumber")?.ToString() ?? "";
+            systeminfo.OSVersion = operatingSystem.GetPropertyValue("Version")?.ToString() ?? "";
+            systeminfo.SerialNumber = bios.GetPropertyValue("SerialNumber")?.ToString() ?? "";
+            systeminfo.SysName = operatingSystem.GetPropertyValue("CSName")?.ToString() ?? "";
+            systeminfo.SystemDir = operatingSystem.GetPropertyValue("SystemDirectory")?.ToString() ?? "";
+            systeminfo.SystemType = computerSystem.GetPropertyValue("SystemType")?.ToString() ?? "";
+            systeminfo.TimeZone = timeZone.GetPropertyValue("StandardName")?.ToString() ?? "";
             systeminfo.TotalPhysicalMemory = ((UInt64)(computerSystem.GetPropertyValue("TotalPhysicalMemory")) / 1048576).ToString() + "MB";
             systeminfo.TotalVirtualMemory = ((UInt64)(operatingSystem.GetPropertyValue("TotalVirtualMemorySize")) / 1048576).ToString() + "MB";
 
@@ -307,9 +329,9 @@ namespace Win_Info
             {
                 updates.Add(new DataClasses.Update
                 {
-                    HotfixID = (m.GetPropertyValue("HotfixID")).ToString(),
-                    InstalledOn = (m.GetPropertyValue("InstalledOn")).ToString(),
-                    Description = (m.GetPropertyValue("Description")).ToString()
+                    HotfixID = (m.GetPropertyValue("HotfixID"))?.ToString() ?? "",
+                    InstalledOn = (m.GetPropertyValue("InstalledOn"))?.ToString() ?? "",
+                    Description = (m.GetPropertyValue("Description"))?.ToString() ?? ""
                 });
             }
             return updates;

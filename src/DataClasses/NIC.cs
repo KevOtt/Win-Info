@@ -14,6 +14,6 @@ namespace Win_Info.DataClasses
         public bool PhysicalAdapter { get; set; }
         public bool Enabled { get; set; }
         public string Status { get; set; }
-        public string IPv4Addr { get; set; }
+        public string IPAddrs { get; set; }
     }
 }

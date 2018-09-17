@@ -21,6 +21,7 @@ namespace Win_Info
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string serverName;
         private Credential credential = new Credential();
         private ConnectionHandler connectionHandler = new ConnectionHandler();
         private DataClasses.ConnectionInfo connectinfo = new DataClasses.ConnectionInfo();
@@ -29,7 +30,9 @@ namespace Win_Info
         private List<DataClasses.NIC> nics = new List<DataClasses.NIC>();
         private List<DataClasses.PageFile> pageFiles = new List<DataClasses.PageFile>();
         private List<DataClasses.PhysicalDisk> physicalDisks = new List<DataClasses.PhysicalDisk>();
+        private List<string> features = new List<string>();
         private DataCollector dataCollector;
+        private BackgroundWorker worker;
 
         private DataClasses.SystemInfo systemInfo = new DataClasses.SystemInfo();
 
@@ -51,15 +54,27 @@ namespace Win_Info
                 return;
             }
 
+            serverName = TargetServer.Text;
+            DisableControls();
+
             // Check credential options
             if (radioButton_SavedCred.IsChecked == true)
             {
                 credential.usedefault = false;
+
+                // If the target server is local host saved creds cannot be used
+                if (TargetServer.Text == "localhost" || TargetServer.Text == System.Environment.MachineName)
+                {
+                    MessageBox.Show("WMI does not allow alternate credentials to be used to connect to localhost, try launching the application as the alternate user."
+                        , "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                }
             }
             else
             {
                 credential.usedefault = true;
             }
+
             // Prompt for credential if needed
             if (credential.usedefault == false & credential.userName == null)
             {
@@ -69,27 +84,40 @@ namespace Win_Info
                     return;
                 }
             }
+            button_ConnectionRefresh.IsEnabled = false;
 
+            // Connect to system
+            Connection();
+        }
+
+        private void Connection()
+        {
             // Set connection status
             connectinfo.ConnectStatus = "Connecting...";
             // Attempt to open WMI connection to server
-            Connect.IsEnabled = false;
-            connectionHandler.CreateConnection(TargetServer.Text, credential);
+            button_Connect.IsEnabled = false;
+            connectionHandler.CreateConnection(serverName, credential);
             // Check we have a valid connection
             if (connectionHandler.validConnection != true)
             {
-                MessageBox.Show((connectionHandler.ConnectionError), "Connection Error", 
+                MessageBox.Show((connectionHandler.ConnectionError), "Connection Error",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
+                connectinfo.ConnectStatus = "Connection Error";
                 return;
             }
 
+            // Set last connection date
+            connectinfo.LastConnection = (DateTime.Now).ToString("MM / dd / yyyy hh: mm:ss tt");
+
             // Get data in a separate thread
             connectinfo.ConnectStatus = "Querying Data....";
-            BackgroundWorker worker = new BackgroundWorker();
+            worker = new BackgroundWorker();
+            worker.WorkerSupportsCancellation = true;
             worker.DoWork += worker_GetData;
             worker.RunWorkerCompleted += worker_RefreshData;
             worker.RunWorkerAsync();
         }
+
 
         private void GetData()
         {
@@ -99,22 +127,23 @@ namespace Win_Info
             nics = dataCollector.GetNICData();
             pageFiles = dataCollector.GetPageFileData();
             physicalDisks = dataCollector.GetPhysicalDiskData();
+            features = dataCollector.GetFeatureData();
             systemInfo = dataCollector.GetSystemInfo();
         }
 
         private void RefreshView()
         {
-            EnableControls();
-
             listView_CPU.ItemsSource = cpus;
             listView_disk.ItemsSource = disks;
             listView_PageFile.ItemsSource = pageFiles;
             listView_PDisk.ItemsSource = physicalDisks;
+            listView_Roles.ItemsSource = features;
             groupBox_BasicInfo.DataContext = groupbox_AdvInfo.DataContext = groupbox_Configuration.DataContext = groupbox_Memory.DataContext = systemInfo;
             RefreshNICView();
+            EnableControls();
         }
 
-        // Separating this call for the physical adapter button
+        // Separating this method from RefreshView() for the physical adapter switch
         private void RefreshNICView()
         {
             if (showPhysicalNIC.IsChecked == true)
@@ -133,12 +162,23 @@ namespace Win_Info
             GetData();
         }
 
+        // Post data collection actions
         private void worker_RefreshData(object sender, RunWorkerCompletedEventArgs e)
         {
             this.Dispatcher.Invoke(() =>
             {
-                connectinfo.ConnectStatus = ("Connected to " + TargetServer.Text);
                 RefreshView();
+
+                if (e.Error != null)
+                {
+                    MessageBox.Show(("Failed to query data: " + e.Error.Message), "Connection Failure", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    connectinfo.ConnectStatus = ("Aborted");
+                }
+                else
+                {
+                    connectinfo.ConnectStatus = ("Connected to " + serverName);
+                }
+                button_ConnectionRefresh.IsEnabled = true;
             });
         }
 
@@ -146,6 +186,7 @@ namespace Win_Info
         private bool PromptForCredential()
         {
             CredentialPrompt credentialprompt = new CredentialPrompt();
+            credentialprompt.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             credentialprompt.ShowDialog();
             // If we have a successfully obtained, update cred object return true
             if (credentialprompt.DialogResult == true)
@@ -159,23 +200,25 @@ namespace Win_Info
         private void DisableControls()
         {
             groupBox_BasicInfo.DataContext = groupbox_AdvInfo.DataContext = groupbox_Configuration.DataContext = groupbox_Memory.DataContext = null;
+            listView_CPU.ItemsSource = listView_disk.ItemsSource = listView_PageFile.ItemsSource = listView_PDisk.ItemsSource = 
+                listView_Roles.ItemsSource = listView_NIC.ItemsSource = null;
+            Grid_Info.IsEnabled = groupbox_Queries.IsEnabled = false;
             Grid_Info.Opacity = 50;
-            Grid_Info.IsEnabled = false;
         }
 
         private void EnableControls()
         {
             Grid_Info.Opacity = 100;
-            Grid_Info.IsEnabled = true;
+            Grid_Info.IsEnabled = groupbox_Queries.IsEnabled = true;
         }
 
 # region EventHandlers
 
         private void TargetServer_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (Connect.IsEnabled != true)
+            if (button_Connect.IsEnabled != true)
             {
-                Connect.IsEnabled = true;
+                button_Connect.IsEnabled = true;
             }
         }
 
@@ -195,18 +238,21 @@ namespace Win_Info
         private void button_queryProcesses_Click(object sender, RoutedEventArgs e)
         {
             var process = new AdditionalQueries.ProcessQuery(dataCollector);
+            process.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             process.ShowDialog();
         }
 
         private void button_queryServices_Click(object sender, RoutedEventArgs e)
         {
             var service = new AdditionalQueries.ServicesQuery(dataCollector);
+            service.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             service.ShowDialog();
         }
 
         private void button_queryUpdates_Click(object sender, RoutedEventArgs e)
         {
             var update = new AdditionalQueries.UpdatesQuery(dataCollector);
+            update.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             update.ShowDialog();
         }
 
@@ -214,7 +260,30 @@ namespace Win_Info
         {
             Close();
         }
-#endregion
+
+        private void button_ConnectionRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            if (serverName != null)
+            {
+                Connection();
+            }
+        }
+
+        private void Credential_Prompt_Click(object sender, RoutedEventArgs e)
+        {
+            PromptForCredential();
+        }
+
+        // Re-enable connect button if cred option changes
+        private void radioButtonCred_Changed(object sender, RoutedEventArgs e)
+        {
+            if (TargetServer.Text != null && button_Connect.IsEnabled == false)
+            {
+                button_Connect.IsEnabled = true;
+            }
+        }
+
+        #endregion
 
     }
 }

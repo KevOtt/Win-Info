@@ -153,5 +153,8 @@
   <ItemGroup>
     <Resource Include="Resources\NIC.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Feature.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
