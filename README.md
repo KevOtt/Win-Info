@@ -1,5 +1,7 @@
-# Win-Info
+# ![logo][] Win-Info
 Remote System Info Tool For Windows and Windows Server
+
+[logo]: https://github.com/KevOtt/Win-Info/blob/master/Assets/WinInfo64px.png?raw=true
 
 ## About
 
@@ -19,7 +21,7 @@ The tool is provided as a standalone .exe file in a .zip archive.
 
 ## How to Use
 
-The .exe can be launched as a standalone application. Any ip address or system name can be entered under "Target System" and click "Connect" to initiat the WMI call to the system.  If you want to connect with alternate credentials, change the credential option to "Used Saved" and either initiate the conenction or click "Prompt" to be prompted for credentials to use. Depending on the system, the conneciton and data querying may take some time. Additional queries for running processes, services, and installed updates can be initiated from the top menu bar once connected. Once connected, the relevant system info is displayed. The tool should work with both Windows desktop and server systems.
+The .exe can be launched as a standalone application. Any ip address or system name can be entered under "Target System" and click "Connect" to initiate the WMI call to the system.  If you want to connect with alternate credentials, change the credential option to "Used Saved" and either initiate the connection or click "Prompt" to be prompted for credentials to use. Depending on the system, the connection and data querying may take some time. Additional queries for running processes, services, and installed updates can be initiated from the top menu bar once connected. Once connected, the relevant system info is displayed. The tool should work with both Windows desktop and server systems.
 
 The tool does require that WMI ports be open to the end points and that the user has access to run basic WMI queries against the system. WMI connections require port 135 and RPC ports to be opened, if you have no firewalls enabled you should have no issues.
 
@@ -37,6 +39,6 @@ Example services query for remote system:
 
 ## License
 
-Win Info is licenced under the [MIT license][].
+Win Info is licensed under the [MIT license][].
 
 [MIT license]: https://github.com/KevOtt/AD-Lab-Generator/blob/master/LICENSE
