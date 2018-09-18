@@ -1,7 +1,7 @@
-# ![logo][] Win-Info
+# ![logo][] Win Info
 Remote System Info Tool For Windows and Windows Server
 
-[logo]: https://github.com/KevOtt/Win-Info/blob/master/Assets/WinInfo64px.png?raw=true
+[logo]: https://github.com/KevOtt/Win-Info/blob/master/Assets/WinInfo48px.png?raw=true
 
 ## About
 
