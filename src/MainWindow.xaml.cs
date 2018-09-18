@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ Copyright (c) 2018 Kevin Ott
+ Licensed under the MIT License
+ See the LICENSE file in the project root for more information. 
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using System.Threading;
 
 namespace Win_Info
 {
@@ -84,18 +91,16 @@ namespace Win_Info
                     return;
                 }
             }
-            button_ConnectionRefresh.IsEnabled = false;
 
             // Connect to system
+            connectinfo.ConnectStatus = "Connecting...";
             Connection();
         }
 
         private void Connection()
         {
-            // Set connection status
-            connectinfo.ConnectStatus = "Connecting...";
-            // Attempt to open WMI connection to server
             button_Connect.IsEnabled = false;
+            // Attempt to open WMI connection to server
             connectionHandler.CreateConnection(serverName, credential);
             // Check we have a valid connection
             if (connectionHandler.validConnection != true)
@@ -103,6 +108,7 @@ namespace Win_Info
                 MessageBox.Show((connectionHandler.ConnectionError), "Connection Error",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
                 connectinfo.ConnectStatus = "Connection Error";
+                button_Connect.IsEnabled = true;
                 return;
             }
 
@@ -273,6 +279,14 @@ namespace Win_Info
         {
             PromptForCredential();
         }
+
+        private void Help_About(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(("Win Info v1.0 - Copyright (c) 2018 Kevin Ott" + "\n" + 
+                "Licensed under the MIT License" + "\n" + "\n" + "https://github.com/kevott"), 
+                "About Win Info", MessageBoxButton.OK, MessageBoxImage.None);
+        }
+
 
         // Re-enable connect button if cred option changes
         private void radioButtonCred_Changed(object sender, RoutedEventArgs e)

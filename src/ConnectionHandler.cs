@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ Copyright (c) 2018 Kevin Ott
+ Licensed under the MIT License
+ See the LICENSE file in the project root for more information. 
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +32,7 @@ namespace Win_Info
             connectionOptions.Impersonation = System.Management.ImpersonationLevel.Impersonate;
         
             // Set credentials if not using default
-            if(credential.usedefault =!false)
+            if(credential.usedefault == false)
                 {
                     connectionOptions.Username = credential.userName;
                     connectionOptions.SecurePassword = credential.securePassword;

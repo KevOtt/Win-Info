@@ -377,9 +377,13 @@
         <Button x:Name="Exit" Content="Exit" Margin="0,0,20,15" Grid.Column="3" HorizontalAlignment="Right" Width="76" Height="20" VerticalAlignment="Bottom" Click="Exit_Click"/>
         <Separator Height="12" Margin="0,113,0,0" VerticalAlignment="Top" Grid.ColumnSpan="4"/>
         <Menu x:Name="MainMenu" Height="20" VerticalAlignment="Top" Grid.ColumnSpan="4">
-            <MenuItem Header="_File" />
-            <MenuItem Header="_Options" />
-            <MenuItem Header="_Help" />
+            <MenuItem Header="_File">
+                <MenuItem Header="Exit" Click="Exit_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Help" >
+                <MenuItem Header="About" Click="Help_About"/>
+            </MenuItem>
+
         </Menu>
     </Grid>
 </Window>
