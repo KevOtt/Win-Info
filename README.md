@@ -27,18 +27,12 @@ The tool does require that WMI ports be open to the end points and that the user
 
 Example server connection:
 <p align="center">
-  <img src="/docs/Screenshots/Screenshot1.png" width="700" title="Screenshot">
+  <img src="/docs/Screenshots/Screenshot1.png" width="900" title="Screenshot">
 </p>
 
-Another Example:
+Example services query for remote system:
 <p align="center">
-  <img src="/docs/Screenshots/Screenshot2.png" width="700" title="Screenshot">
-</p>
-
-
-Example services query
-<p align="center">
-  <img src="/docs/Screenshots/Screenshot3.png.png" width="700" title="Screenshot">
+  <img src="/docs/Screenshots/Screenshot3.png" width="900" title="Screenshot">
 </p>
 
 ## License
