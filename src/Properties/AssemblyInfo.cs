@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("Win Info")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("https://github.com/KevOtt")]
 [assembly: AssemblyProduct("Win Info")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Copyright ©  2018 Kevin Ott")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
